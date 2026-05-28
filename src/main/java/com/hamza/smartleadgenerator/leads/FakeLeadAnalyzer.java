@@ -4,7 +4,7 @@ import com.hamza.smartleadgenerator.message.InboundMessage;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FakeLeadAnalyzer {
+public class FakeLeadAnalyzer implements LeadAnalyzer{
 
     public LeadAnalysisResult analyze(InboundMessage message){
         String content = message.content();

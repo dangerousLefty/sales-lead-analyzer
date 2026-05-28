@@ -1,5 +1,6 @@
 package com.hamza.smartleadgenerator.leads;
 
+import com.hamza.smartleadgenerator.exceptions.LeadNotFoundException;
 import com.hamza.smartleadgenerator.message.InboundMessage;
 import org.springframework.stereotype.Service;
 
@@ -34,15 +35,11 @@ public class LeadService {
         return toResponse(lead);
     }
 
-    public Optional<LeadResponse> getLead(Long id){
-        Optional<Lead> optionalLead = leadRepository.findById(id);
+    public LeadResponse getLead(Long id){
+        Lead lead = leadRepository.findById(id)
+                .orElseThrow(() -> new LeadNotFoundException(id));
 
-        if (optionalLead.isPresent()){
-            Lead lead = optionalLead.get();
-            LeadResponse response = toResponse(lead);
-            return Optional.of(response);
-        }
-        return Optional.empty();
+        return toResponse(lead);
     }
 
     public List<LeadResponse> getLeads(){

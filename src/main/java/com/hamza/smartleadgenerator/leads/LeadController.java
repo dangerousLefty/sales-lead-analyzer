@@ -21,12 +21,7 @@ public class LeadController {
 
     @GetMapping("/{leadId}")
     public ResponseEntity<LeadResponse> getLead(@PathVariable Long leadId){
-        Optional<LeadResponse> leadResponse = leadService.getLead(leadId);
-
-        if (leadResponse.isPresent()){
-            return ResponseEntity.ok(leadResponse.get());
-        }
-        return ResponseEntity.notFound().build();
+       return ResponseEntity.ok(leadService.getLead(leadId));
     }
 
     @GetMapping
