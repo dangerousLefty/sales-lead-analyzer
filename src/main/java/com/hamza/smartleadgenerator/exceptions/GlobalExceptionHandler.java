@@ -34,4 +34,11 @@ public class GlobalExceptionHandler {
                 .badRequest()
                 .body(errors);
     }
+
+    @ExceptionHandler(AiAnalysisException.class)
+    public ResponseEntity<String> handleAiAnalysisException(AiAnalysisException exception){
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(exception.getMessage());
+    }
 }

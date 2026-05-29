@@ -3,6 +3,7 @@ package com.hamza.smartleadgenerator.leads;
 import com.hamza.smartleadgenerator.ai.ChatCompletionResponse;
 import com.hamza.smartleadgenerator.ai.HuggingFaceRequest;
 import com.hamza.smartleadgenerator.ai.HuggingFaceService;
+import com.hamza.smartleadgenerator.exceptions.AiAnalysisException;
 import com.hamza.smartleadgenerator.message.InboundMessage;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -51,12 +52,12 @@ General compliments, simple office-hour questions, password reset questions, stu
                         new HuggingFaceRequest.Message("user", message.content())
                 ),
                 "meta-llama/Llama-3.3-70B-Instruct:groq",
+                //"meta-llama/Llama-3.3-70B-Instruct:gq",
                 false
         );
 
-        ChatCompletionResponse response = huggingFaceService.completion(request);
-
         try {
+            ChatCompletionResponse response = huggingFaceService.completion(request);
             AiLeadAnalysisResponse aiResponse = objectMapper.readValue(
                     response.content(),
                     AiLeadAnalysisResponse.class
@@ -74,7 +75,7 @@ General compliments, simple office-hour questions, password reset questions, stu
                     aiResponse.summary()
             );
         } catch (Exception e) {
-            throw new RuntimeException("Failed to parse Hugging Face response", e);
+            throw new AiAnalysisException("Failed to analyze message with AI", e);
         }
 
     }

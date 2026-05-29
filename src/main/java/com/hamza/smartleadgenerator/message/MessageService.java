@@ -10,17 +10,14 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class MessageService {
     private final MessageRepository messageRepository;
-    private final LeadAnalyzer leadAnalyzer;
-    private final LeadService leadService;
+    private final LeadQualificationService leadQualificationService;
     private final AtomicLong idGenerator = new AtomicLong(1);
 
     public MessageService(MessageRepository messageRepository,
-                          LeadAnalyzer leadAnalyzer,
-                          LeadService leadService
+                          LeadQualificationService leadQualificationService
     ) {
         this.messageRepository = messageRepository;
-        this.leadAnalyzer = leadAnalyzer;
-        this.leadService = leadService;
+        this.leadQualificationService = leadQualificationService;
     }
 
     public MessageResponse createMessage(MessageRequest messageRequest) {
@@ -31,11 +28,9 @@ public class MessageService {
                 messageRequest.content(),
                 LocalDateTime.now()
         ));
-        LeadAnalysisResult result = leadAnalyzer.analyze(savedMessage);
 
-        if (result.qualified()){
-            leadService.createLeadFromMessage(savedMessage, result);
-        }
+        leadQualificationService.qualifyMessage(savedMessage);
+
         return new MessageResponse(
                 savedMessage.id(),
                 savedMessage.content(),
