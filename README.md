@@ -9,7 +9,7 @@ Smart Lead Generator is a Spring Boot backend application that:
 
 - Submit inbount messages
 - View submitted messages
-- Automatically analyze messages with Hugging Face
+- Automatically analyze messages with Hugging Face (LLM: "meta-llama/Llama-3.3-70B-Instruct:groq")
 - Create qualified leads with title, type, urgency, and summary
 - View all qualified leads
 - View a qualified lead by ID
