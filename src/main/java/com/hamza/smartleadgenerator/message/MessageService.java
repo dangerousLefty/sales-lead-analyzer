@@ -1,6 +1,7 @@
 package com.hamza.smartleadgenerator.message;
 
 import com.hamza.smartleadgenerator.leads.*;
+import com.hamza.smartleadgenerator.qualification.LeadQualificationDispatcher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -10,14 +11,14 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class MessageService {
     private final MessageRepository messageRepository;
-    private final LeadQualificationService leadQualificationService;
+    private final LeadQualificationDispatcher leadQualificationDispatcher;
     private final AtomicLong idGenerator = new AtomicLong(1);
 
     public MessageService(MessageRepository messageRepository,
-                          LeadQualificationService leadQualificationService
+                          LeadQualificationDispatcher leadQualificationDispatcher
     ) {
         this.messageRepository = messageRepository;
-        this.leadQualificationService = leadQualificationService;
+        this.leadQualificationDispatcher = leadQualificationDispatcher;
     }
 
     public MessageResponse createMessage(MessageRequest messageRequest) {
@@ -29,7 +30,7 @@ public class MessageService {
                 LocalDateTime.now()
         ));
 
-        leadQualificationService.qualifyMessage(savedMessage);
+        leadQualificationDispatcher.dispatch(savedMessage);
 
         return new MessageResponse(
                 savedMessage.id(),

@@ -2,6 +2,8 @@ package com.hamza.smartleadgenerator.messages;
 
 import com.hamza.smartleadgenerator.leads.LeadQualificationService;
 import com.hamza.smartleadgenerator.message.*;
+import com.hamza.smartleadgenerator.qualification.AsyncLeadQualificationDispatcher;
+import com.hamza.smartleadgenerator.qualification.LeadQualificationDispatcher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +25,8 @@ public class MessageServiceTest {
     private MessageRepository messageRepository;
 
     @Mock
-    private LeadQualificationService leadQualificationService;
+    //private LeadQualificationService leadQualificationService;
+    private LeadQualificationDispatcher leadQualificationDispatcher;
 
     @InjectMocks
     private MessageService messageService;
@@ -47,7 +50,9 @@ public class MessageServiceTest {
         assertNotNull(response.createdAt());
 
         verify(messageRepository).save(any(InboundMessage.class));
-        verify(leadQualificationService).qualifyMessage(any(InboundMessage.class));
+        //verify(leadQualificationService).qualifyMessage(any(InboundMessage.class));
+        verify(leadQualificationDispatcher).dispatch(any(InboundMessage.class));
+
 
     }
 
