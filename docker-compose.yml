@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: smartlead-postgres
+    environment:
+      POSTGRES_DB: smartlead
+      POSTGRES_USER: smartlead
+      POSTGRES_PASSWORD: smartlead
+    ports:
+      - "5432:5432"
+    volumes:
+      - smartlead-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  smartlead-postgres-data:
