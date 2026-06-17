@@ -21,8 +21,8 @@ public class JpaMessageRepositoryAdapter implements MessageRepository {
     @Override
     public InboundMessage save(InboundMessage message) {
         InboundMessageEntity entity = toEntity(message);
-        jpaRepository.save(entity);
-        return toDomain(entity);
+        InboundMessageEntity savedEntity = jpaRepository.save(entity);
+        return toDomain(savedEntity);
     }
 
     @Override

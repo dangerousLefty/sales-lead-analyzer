@@ -19,7 +19,6 @@ public class LeadQualificationService {
         this.leadService = leadService;
     }
 
-    @Async
     public void qualifyMessage(InboundMessage message){
         try {
             LeadAnalysisResult result = leadAnalyzer.analyze(message);

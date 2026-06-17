@@ -20,8 +20,8 @@ public class JpaLeadRepositoryAdapter implements LeadRepository {
     @Override
     public Lead save(Lead lead) {
         QualifiedLeadEntity entity = toEntity(lead);
-        jpaRepository.save(entity);
-        return toDomain(entity);
+        QualifiedLeadEntity savedEntity = jpaRepository.save(entity);
+        return toDomain(savedEntity);
     }
 
     @Override

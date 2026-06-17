@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class LeadService {
     private final LeadRepository leadRepository;
-    private final AtomicLong idGenerator = new AtomicLong(1);
 
     public LeadService(LeadRepository leadRepository) {
         this.leadRepository = leadRepository;
@@ -22,7 +21,7 @@ public class LeadService {
             LeadAnalysisResult result
     ){
         Lead lead = new Lead(
-                idGenerator.getAndIncrement(),
+                null,
                 message.id(),
                 result.title(),
                 result.type(),

@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "qualified_leads")
 public class QualifiedLeadEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "message_id", nullable = false)

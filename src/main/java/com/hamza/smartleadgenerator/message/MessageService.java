@@ -12,7 +12,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final LeadQualificationDispatcher leadQualificationDispatcher;
-    private final AtomicLong idGenerator = new AtomicLong(1);
 
     public MessageService(MessageRepository messageRepository,
                           LeadQualificationDispatcher leadQualificationDispatcher
@@ -25,7 +24,7 @@ public class MessageService {
 
         InboundMessage savedMessage =  messageRepository.save(
                 new InboundMessage(
-                idGenerator.getAndIncrement(),
+                null,
                 messageRequest.content(),
                 LocalDateTime.now()
         ));
