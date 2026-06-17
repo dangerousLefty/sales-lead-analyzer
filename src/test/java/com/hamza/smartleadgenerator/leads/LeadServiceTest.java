@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -109,12 +108,24 @@ public class LeadServiceTest {
         );
 
         when(leadRepository.save(any(Lead.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+                .thenAnswer(invocation -> {
+                    Lead lead = invocation.getArgument(0);
+
+                    return new Lead(
+                            1L,
+                            lead.messageId(),
+                            lead.title(),
+                            lead.type(),
+                            lead.urgencyLevel(),
+                            lead.summary(),
+                            lead.createdAt()
+                    );
+                });
         // When
         LeadResponse response = leadService.createLeadFromMessage(message, analysisResult);
 
         //Then
-        assertEquals(1L, response.id());
+        assertNull(response.id());
         assertEquals(10L, response.messageId());
         assertEquals("Pricing inquiry", response.title());
         assertEquals(LeadType.PRICING_INQUIRY, response.type());

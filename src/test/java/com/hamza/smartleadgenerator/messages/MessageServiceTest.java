@@ -39,7 +39,15 @@ public class MessageServiceTest {
         );
 
         when(messageRepository.save(any(InboundMessage.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+                .thenAnswer(invocation -> {
+                    InboundMessage message = invocation.getArgument(0);
+
+                    return new InboundMessage(
+                            1L,
+                            message.content(),
+                            message.createdAt()
+                    );
+                });
 
         // When
         MessageResponse response = messageService.createMessage(request);
@@ -52,7 +60,6 @@ public class MessageServiceTest {
         verify(messageRepository).save(any(InboundMessage.class));
         //verify(leadQualificationService).qualifyMessage(any(InboundMessage.class));
         verify(leadQualificationDispatcher).dispatch(any(InboundMessage.class));
-
 
     }
 
