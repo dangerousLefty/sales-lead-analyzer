@@ -1,4 +1,4 @@
-# Smart Lead Generator
+# Sales Lead Analyzer
 
 Smart Lead Generator is a Spring Boot backend application that: 
 - Accepts inbound website contact messages.
