@@ -222,7 +222,7 @@ Example response:
 
 ### View a lead by ID
 ```http
-GET http://localhost:8080/api/v1/messages
+GET http://localhost:8080/api/v1/leads/1
 ```
 
 ## Database Migrations
@@ -248,7 +248,7 @@ flyway_schema_history
 
 Hibernate is configured with:
 ```properties
-Hibernate is configured with:
+spring.jpa.hibernate.ddl-auto=validate
 ```
 This means Flyway owns schema creation and Hibernate only validates that the Java entities match the database tables.
 
@@ -283,7 +283,7 @@ Use an IAM user with SQS permissions. Do not use root AWS credentials.
 
 - Add pagination and sorting for message and lead endpoints
 - Add filtering by lead type and urgency
-- Add Docker Compose support for running the full app stack
+- Extend docker-compose.yml to run the full app stack (currently Postgres only)
 - Add LocalStack support for local SQS development
 - Add more integration tests
 - Add CI with GitHub Actions
