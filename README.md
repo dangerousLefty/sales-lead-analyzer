@@ -7,7 +7,7 @@ Smart Lead Generator is a Spring Boot backend application that:
 - Uses Hugging Face AI to determine whether each message should become a qualified sales lead.
 
 If a message qualifies as a lead, the application stores structured lead data including a title, lead type, urgency level, and summary.
-A React + TypeScript frontend for this backend is available at sales-lead-analyzer-ui.
+A React + TypeScript frontend for this backend is available at [sales-lead-analyzer-ui](https://github.com/dangerousLefty/sales-lead-analyzer-ui).
 
 The application supports three lead qualification dispatch modes behind a single `LeadQualificationDispatcher` interface, selected at startup via Spring profile:
 
