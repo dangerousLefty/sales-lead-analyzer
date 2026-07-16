@@ -7,6 +7,7 @@ Smart Lead Generator is a Spring Boot backend application that:
 - Uses Hugging Face AI to determine whether each message should become a qualified sales lead.
 
 If a message qualifies as a lead, the application stores structured lead data including a title, lead type, urgency level, and summary.
+A React + TypeScript frontend for this backend is available at sales-lead-analyzer-ui.
 
 The application supports three lead qualification dispatch modes behind a single `LeadQualificationDispatcher` interface, selected at startup via Spring profile:
 
@@ -29,6 +30,7 @@ The application supports three lead qualification dispatch modes behind a single
 - Apache Kafka processing mode with dead-letter topic and retry backoff
 - Partition-keyed for per-message ordering (Kafka mode)
 - Unit tests for service and dispatcher/listener behavior
+- CORS configuration for local development against the React frontend on http://localhost:5173
 
 ## Tech Stack
 
@@ -54,6 +56,7 @@ The application follows an N-tier architecture:
 - Repository layer: handles persistence
 - AI layer: calls Hugging Face for lead analysis
 - Qualification layer: dispatches lead qualification jobs using local async processing, AWS SQS, or Apache Kafka
+- The React frontend calls `POST /api/v1/messages` to submit inbount messages and `GET /api/v1/leads` to display qualified leads.
 
 Basic flow:
 
@@ -186,6 +189,30 @@ For IntelliJ:
 2. Select the Spring Boot run configuration
 3. Add the environment variables
 4. Restart the application
+
+## Running the Frontend
+
+The [sales-lead-analyzer-ui](https://github.com/dangerousLefty/sales-lead-analyzer-ui) repository contains a React + TypeScript frontend that submits inbound messages and displays qualified leads through this backend's REST API.
+
+Clone it as a sibling directory:
+
+​```
+~/IdeaProjects/
+├── smart-lead-generator/       ← this repo
+└── sales-lead-analyzer-ui/     ← frontend repo
+​```
+
+Then, with the backend already running:
+
+​```
+cd sales-lead-analyzer-ui
+npm install
+npm run dev
+​```
+
+The frontend runs on `http://localhost:5173`. This backend's `CorsConfig` already grants that origin permission to call `/api/**`, so no additional configuration is required for local development.
+
+
 
 ## Application Configuration
 
@@ -375,7 +402,9 @@ The included `docker-compose.yml` runs a single-node Kafka broker in KRaft mode 
 
 ## Future improvements
 
-- Add pagination and sorting for message and lead endpoints
+- Add pagination and sorting for message and lead endpoints (done)
+- Serve the built React frontend from the Spring Boot backend as static resources in production
+- Add authentication and a per-user view of qualified leads
 - Add filtering by lead type and urgency
 - Add LocalStack support for local SQS development
 - Add Kafka Streams for real-time lead metrics
